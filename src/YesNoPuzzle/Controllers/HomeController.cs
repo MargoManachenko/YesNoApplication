@@ -3,14 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using YesNoPuzzle.Data;
 
 namespace YesNoPuzzle.Controllers
 {
     public class HomeController : Controller
     {
+        ApplicationDbContext _db;
+
+        public HomeController(ApplicationDbContext db)
+        {
+            _db = db;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            var model = _db.Users.Where(u => u.GameState);
+            return View(model);
+        }
+
+        public IActionResult Game(string id)
+        {
+            return Content(id);
         }
 
         public IActionResult About()

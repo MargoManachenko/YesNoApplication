@@ -9,10 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using YesNoPuzzle.Models;
+using YesNoPuzzle.Controllers;
+using YesNoPuzzle.Models;
 using YesNoPuzzle.Models.AccountViewModels;
 using YesNoPuzzle.Services;
 
-namespace YesNoPuzzle.Controllers
+namespace YesNo.Controllers
 {
     [Authorize]
     public class AccountController : Controller
@@ -105,7 +107,14 @@ namespace YesNoPuzzle.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    GameName = model.GameName,
+                    GameCondition = model.GameCondition,
+                    GameState = true
+                };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
