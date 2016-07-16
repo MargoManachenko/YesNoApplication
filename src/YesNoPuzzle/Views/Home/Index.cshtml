@@ -4,10 +4,32 @@
 
 @using Microsoft.EntityFrameworkCore.Metadata.Internal
 @using YesNoPuzzle.Models
+@model YesNoPuzzle.Models.ViewModels.IndexViewModel
 
-@model IEnumerable<ApplicationUser>
+<script>
+    function addGame() {
+        $.post({
+            url: "/Home/AddNewGame",
+            data: {
+                GameName: $('#newGameName').val(),
+                GameCondition: $('#newGameCondition').val()
+            },
+            success: function (data) {
+                alert(data);
+                window.location.reload();
+            }
+        });
+    }
+</script>
+<input type="text" id="newGameName" /><br />
+<input type="text" id="newGameCondition" /><br />
+<button onclick="addGame()">NEW GAME</button>
 
-@foreach (var user in Model)
-{
-    <div><a href="Home/Game/@user.Id">@user.GameName</a></div>
+<hr />
+@{
+    <h1>GAMES: @Model.Games.Count</h1>
+    foreach(var g in Model.Games)
+    {
+        <h4><a href="/Home/Game/@g.Id">@g.GameName</a></h4>
+    }
 }
