@@ -26,14 +26,14 @@
     <div class="form-group">
         <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="ConfirmPassword" class="form-control"/>
+            <input asp-for="ConfirmPassword" class="form-control" />
             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
         <label asp-for="GameName" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="GameName" class="form-control"/>
+            <input asp-for="GameName" class="form-control" />
             <span asp-validation-for="GameName" class="text-danger"></span>
         </div>
     </div>
@@ -50,7 +50,6 @@
         </div>
     </div>
 </form>
-
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
