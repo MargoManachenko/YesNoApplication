@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@using YesNoPuzzle.Models
+@model YesNoPuzzle.Models.Game
+
+<script>
+    function addQuestion() {
+        $.post({
+            url: "/Home/AddNewQuestion",
+            data: {
+                Text: $('#newQuestionText').val(),
+                GameId: "@Model.Id"
+            },
+            success: function (data) {
+                alert(data);
+                window.location.reload();
+            }
+        });
+    }
+</script>
+
+@{
+    <h1>GAME: @Model.GameName</h1>
+    <input type="text" id="newQuestionText" /><br />
+    <button onclick="addQuestion()">NEW QUESTION</button>
+    if (Model.Questions != null)
+    {
+        foreach (var q in Model.Questions)
+        {
+            <p>@q.Text</p>
+        }
+    }
+    else
+    {
+        <h4>No questions yet</h4>
+    }
+
+
+}
