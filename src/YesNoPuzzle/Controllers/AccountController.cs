@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using YesNoPuzzle.Models;
 using YesNoPuzzle.Controllers;
-using YesNoPuzzle.Models;
 using YesNoPuzzle.Models.AccountViewModels;
 using YesNoPuzzle.Services;
 
@@ -110,10 +109,7 @@ namespace YesNo.Controllers
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
-                    Email = model.Email,
-                    GameName = model.GameName,
-                    GameCondition = model.GameCondition,
-                    GameState = true
+                    Email = model.Email,                    
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
