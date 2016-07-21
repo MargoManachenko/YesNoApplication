@@ -3,33 +3,11 @@
 }
 
 @using Microsoft.EntityFrameworkCore.Metadata.Internal
-@model ICollection<Game>
+@using YesNoPuzzle.Models
 
-<script>
-    function addGame() {
-        $.post({
-            url: "/Home/AddNewGame",
-            data: {
-                GameName: $('#newGameName').val(),
-                GameCondition: $('#newGameCondition').val()
-            },
-            success: function (data) {
-                alert(data);
-                window.location.reload();
-            }
-        });
-    }
-</script>
-<input type="text" id="newGameName" /><br />
-<input type="text" id="newGameCondition" /><br />
-<button onclick="addGame()">New game</button>
+@model IEnumerable<ApplicationUser>
 
-<hr />
-@{
-    <h1>Games: @Model.Count</h1>
-    foreach(var g in Model)
-    {
-        <h4><a href="/Home/Game/@g.Id">@g.GameName</a></h4>
-    }
-
+@foreach (var user in Model)
+{
+    <div><a href="Home/Game/@user.Id">@user.GameName</a></div>
 }
