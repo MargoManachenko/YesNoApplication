@@ -1,0 +1,24 @@
+﻿@model Game
+
+@{
+    ViewData["Title"] = "New game";
+}
+
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using YesNoPuzzle.Models
+
+<form asp-controller="Home" asp-action="AddNewGame" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+
+    <div class="form-group">
+        <label asp-for="GameName"></label>
+        <input type="text" asp-for="GameName" /><br />
+    </div>
+    <div class="form-group">
+        <label asp-for="GameCondition"></label>
+        <textarea asp-for="GameCondition"></textarea>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary">New game</button>
+    </div>
+
+</form>

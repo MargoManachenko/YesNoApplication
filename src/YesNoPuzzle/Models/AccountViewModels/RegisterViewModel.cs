@@ -9,8 +9,7 @@ namespace YesNoPuzzle.Models.AccountViewModels
     public class RegisterViewModel
     {
         [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "Login")]
         public string Email { get; set; }
 
         [Required]
