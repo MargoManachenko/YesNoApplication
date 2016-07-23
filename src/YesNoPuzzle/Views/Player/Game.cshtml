@@ -17,8 +17,15 @@
         <hr/>
         foreach (var q in @Model.Questions)
         {
-            <span class="glyphicon glyphicon-question-sign"></span>
             @q.Text
+            @if (q.State == 0)
+                {<span class="glyphicon glyphicon-hourglass col-lg-1"></span>}
+            else if (q.State == 1)
+                {<span class="glyphicon glyphicon-ok col-lg-1"></span>}
+            else if (q.State == 2)
+                {<span class="glyphicon glyphicon-remove col-lg-1"></span>}
+            else if (q.State == 3)
+                {<span class="glyphicon glyphicon-question-sign col-lg-1"></span>}
             <hr/>
         }
        

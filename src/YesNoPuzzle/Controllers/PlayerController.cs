@@ -42,26 +42,7 @@ namespace YesNoPuzzle.Controllers
         }
      
 
-        public async Task<IActionResult> DeleteGame(int? id)
-        {
-            if (id == null)
-                return NotFound();
-
-            var game = _db.Games.First(g => g.Id == id);
-
-            var questions = _db.Questions.Where(q => q.Game == game).ToList();
-
-            foreach (var q in questions)
-            {
-                _db.Questions.Remove(q);
-            }
-
-            _db.Games.Remove(game);
-
-            await _db.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index), "Player");
-        }
+        
 
         public async Task<IActionResult> Game(int? id)
         {

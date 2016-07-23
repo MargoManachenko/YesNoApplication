@@ -13,9 +13,11 @@
             for (int i = 0; i < g.Questions.Count; i++)
             {
                 <h4>@(i + 1): @g.Questions[i].Text</h4>
-                <input type="submit" class="btn btn-success" value="Yes" />
-                <input type="submit" class="btn btn-danger" value="No" />
-                <input type="submit" class="btn btn-default" value="No matter" />
+                <form asp-controller="Admin" method="post" display="inline">                 
+                    <a href="/Admin/AnswerYes/@g.Questions[i].Id" class="btn btn-success" role="button">Yes</a>
+                    <a href="/Admin/AnswerNo/@g.Questions[i].Id" class="btn btn-danger" role="button">No</a>
+                    <a href="/Admin/AnswerNoMatter/@g.Questions[i].Id" class="btn btn-default" role="button">No matter</a>
+                </form>
                 <hr />
             }
         }

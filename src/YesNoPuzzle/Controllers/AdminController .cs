@@ -75,6 +75,48 @@ namespace YesNoPuzzle.Controllers
             return View();    
         }
 
+        public async Task<IActionResult> AnswerYes(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            Question question = _db.Questions.First(q => q.Id == id);
+
+            question.State = 1;
+
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Question", "Admin");
+        }
+
+        public async Task<IActionResult> AnswerNo(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            Question question = _db.Questions.First(q => q.Id == id);
+
+            question.State = 2;
+
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Question", "Admin");
+        }
+
+        public async Task<IActionResult> AnswerNoMatter(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            Question question = _db.Questions.First(q => q.Id == id);
+
+            question.State = 3;
+
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Question", "Admin");
+        }
+
         public async Task<IActionResult> Question()
         {           
                 var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
