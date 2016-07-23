@@ -43,6 +43,21 @@ namespace YesNoPuzzle.Controllers
             return RedirectToAction(nameof(Index), "Admin");
         }
 
+        public async Task<IActionResult> GameOver(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var game = _db.Games.First(g => g.Id == id);
+
+            game.GameState = false;
+
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index), "Admin");
+        }
+
+
         public async Task<IActionResult> CreateNewGame()
         {
             return View();

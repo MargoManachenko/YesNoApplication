@@ -4,15 +4,20 @@
 @if (Model != null)
 {
     foreach (Game g in Model)
-    {
-        <h1>@g.GameName is @g.GameState</h1>
+    {           
+            <h1>
+                @g.GameName
+            </h1>
+                <a href="/Admin/GameOver/@g.Id" class="btn btn-info" role="button">Game over</a>
+            
         if (g.Questions != null && g.Questions.Count > 0)
         {
             <h3>Questions:</h3>
             <br />
             for (int i = 0; i < g.Questions.Count; i++)
             {
-                <h4>@(i + 1): @g.Questions[i].Text</h4>
+                <h4 class="col-lg-3">@(i + 1): @g.Questions[i].Text</h4>
+                <h5>@g.Questions[i].QuestionDate</h5>
                 <form asp-controller="Admin" method="post" display="inline">                 
                     <a href="/Admin/AnswerYes/@g.Questions[i].Id" class="btn btn-success" role="button">Yes</a>
                     <a href="/Admin/AnswerNo/@g.Questions[i].Id" class="btn btn-danger" role="button">No</a>

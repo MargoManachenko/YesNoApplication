@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using YesNoPuzzle.Models;
 using YesNoPuzzle.Models.GameViewModels;
+using System;
 
 namespace YesNoPuzzle.Controllers
 {
@@ -73,7 +74,8 @@ namespace YesNoPuzzle.Controllers
             {
                 Text = text,
                 State = 0,
-                Game = game
+                Game = game,
+                QuestionDate = DateTime.Now
             });
             await _db.SaveChangesAsync();
            

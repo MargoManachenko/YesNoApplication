@@ -14,7 +14,7 @@
         {
             <div style="display: inline">
                 <form asp-controller="Admin" asp-action="deleteGame" method="post" display="inline">
-                    <h4 class="col-lg-1"><a href="/player/Game/@g.Id">@g.GameName</a></h4>
+                    <h4 class="col-lg-4"><a href="/player/Game/@g.Id">@g.GameName</a></h4>
                     <a href="/Admin/DeleteGame/@g.Id" class="btn btn-danger" role="button">Delete</a>
                 </form>
                 <hr/>
