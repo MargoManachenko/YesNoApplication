@@ -1,0 +1,32 @@
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using YesNoPuzzle.Models
+@model ICollection<Game>
+@if (Model != null)
+{
+    foreach (Game g in Model)
+    {
+        <h1>@g.GameName is @g.GameState</h1>
+        if (g.Questions != null && g.Questions.Count > 0)
+        {
+            <h3>Questions:</h3>
+            <br />
+            for (int i = 0; i < g.Questions.Count; i++)
+            {
+                <h4>@(i + 1): @g.Questions[i].Text</h4>
+                <input type="submit" class="btn btn-success" value="Yes" />
+                <input type="submit" class="btn btn-danger" value="No" />
+                <input type="submit" class="btn btn-default" value="No matter" />
+                <hr />
+            }
+        }
+        else
+        {
+            <br />
+            <h4>No questions yet for this game.</h4>
+        }
+    }
+}
+else
+{
+    <h1>You are not logged as admin!</h1>
+}
