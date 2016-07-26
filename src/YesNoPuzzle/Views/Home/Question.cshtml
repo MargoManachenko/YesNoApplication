@@ -6,7 +6,7 @@
 @model ICollection<Game>
 @foreach (Game g in Model)
 {
-    <h1>@g.GameName is @g.GameState</h1>
+    <h1> @g.GameName </h1>
     if (g.Questions != null && g.Questions.Count > 0)
     {
         <h4>Questions:</h4>

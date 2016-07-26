@@ -1,6 +1,8 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    font-size: 17px;
+    font-family: sans-serif;
 }
 
 /* Wrapping element */
@@ -14,12 +16,12 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    max-width: 380px;
 }
 
 /* Carousel */
 .carousel-caption p {
-    font-size: 20px;
+    font-size: 22px;
     line-height: 1.4;
 }
 

@@ -44,14 +44,16 @@ namespace YesNoPuzzle.Controllers
             return View();
         }
 
-        public async Task<IActionResult> AddNewGame(Models.GameViewModels.GameViewModel model)
+        public async Task<IActionResult> AddNewGame(string gameName, string gameCondition)
         {
-            if (model == null) return NotFound();
+            if(string.IsNullOrEmpty(gameName) && string.IsNullOrEmpty(gameCondition))
+
+                return RedirectToAction("CreateNewGame", "Home");
 
             _db.Games.Add(new Game()
             {
-                GameName = model.GameName,
-                GameCondition = model.GameCondition,
+                GameName = gameName,
+                GameCondition = gameCondition,
                 GameState = true,
                 User = await _userManager.GetUserAsync(HttpContext.User)
             });
@@ -145,7 +147,7 @@ namespace YesNoPuzzle.Controllers
 
             await _db.SaveChangesAsync();
 
-            return RedirectToAction("Question", "Home");
+            return RedirectToAction("Question", "Game");
         }
 
         public async Task<IActionResult> AnswerNo(int? id)
@@ -159,7 +161,7 @@ namespace YesNoPuzzle.Controllers
 
             await _db.SaveChangesAsync();
 
-            return RedirectToAction("Question", "Home");
+            return RedirectToAction("Question", "Game");
         }
 
 
@@ -174,23 +176,15 @@ namespace YesNoPuzzle.Controllers
 
             await _db.SaveChangesAsync();
 
-            return RedirectToAction("Question", "Home");
+            return RedirectToAction("Question", "Game");
         }
 
 
-        public IActionResult About()
+        public IActionResult Rules()
         {
-            ViewData["Message"] = "Your application description page.";
-
             return View();
         }
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
 
         public IActionResult Error()
         {

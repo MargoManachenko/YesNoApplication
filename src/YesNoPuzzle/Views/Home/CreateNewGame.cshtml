@@ -6,19 +6,22 @@
 
 @using Microsoft.EntityFrameworkCore.Metadata.Internal
 @using YesNoPuzzle.Models
+<body style="margin: 50px">
 
-<form asp-controller="Home" asp-action="AddNewGame" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+    <form asp-controller="Home" asp-action="AddNewGame" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+        <div class="form-group">
+            <label asp-for="GameName"></label>
+            <input type="text" asp-for="GameName" class="form-control" style="max-width: 50%" autocomplete="off"/><br />
+        </div>
+        <div class="form-group">
+            <label asp-for="GameCondition"></label>
+            <textarea asp-for="GameCondition" class="form-control" rows="5" style="max-width: 50%; resize: none" cols="50"></textarea>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary">New game</button>
+        </div>
+    </form>
 
-    <div class="form-group">
-        <label asp-for="GameName"></label>
-        <input type="text"  asp-for="GameName" class="form-control" style="max-width: 50%" /><br />
-    </div>
-    <div class="form-group">
-        <label asp-for="GameCondition"></label>
-        <textarea asp-for="GameCondition" class="form-control" rows="5" style="max-width: 50%; resize: none" cols ="50"></textarea>
-    </div>
-    <div class="form-group">
-        <button class="btn btn-primary">New game</button>
-    </div>
+</body>
 
-</form>
+
