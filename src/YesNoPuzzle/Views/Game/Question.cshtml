@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Questions Page";
+}
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using YesNoPuzzle.Models
+@model ICollection<Game>
+
+@foreach (Game g in Model)
+{
+    <h1>@g.GameName is @g.GameState</h1>
+    if (g.Questions != null && g.Questions.Count > 0)
+    {
+        <h4>Questions:</h4>
+
+        for (int i = 0; i < g.Questions.Count; i++)
+        {
+            <p>
+                @(i + 1): @g.Questions[i].Text
+            </p>
+                <a href="/Game/GameOver/@g.Id" class="btn btn-info" role="button">Game over</a>
+                <a href="/Home/AnswerYes/@g.Questions[i].Id" class="btn btn-success" role="button">Yes</a>
+                <a href="/Home/AnswerNo/@g.Questions[i].Id" class="btn btn-danger" role="button">No</a>
+                <a href="/Home/AnswerNoMatter/@g.Questions[i].Id" class="btn btn-default" role="button">No matter</a>
+                <a href="/Game/DeleteQuestion/@g.Questions[i].Id" class="btn btn-default" role="button">Delete</a>
+        }
+    }
+    else
+    {
+        <h4>No questions yet for this game.</h4>
+    }
+}

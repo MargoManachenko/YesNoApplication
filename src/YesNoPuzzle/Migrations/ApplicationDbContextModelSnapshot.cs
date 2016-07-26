@@ -177,9 +177,11 @@ namespace YesNoPuzzle.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("GameCondition");
+                    b.Property<string>("GameCondition")
+                        .IsRequired();
 
-                    b.Property<string>("GameName");
+                    b.Property<string>("GameName")
+                        .IsRequired();
 
                     b.Property<bool>("GameState");
 
@@ -201,7 +203,8 @@ namespace YesNoPuzzle.Migrations
 
                     b.Property<int>("State");
 
-                    b.Property<string>("Text");
+                    b.Property<string>("Text")
+                        .IsRequired();
 
                     b.Property<string>("UserId");
 

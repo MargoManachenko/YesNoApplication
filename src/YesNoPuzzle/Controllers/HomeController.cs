@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -7,6 +8,8 @@ using YesNoPuzzle.Data;
 using YesNoPuzzle.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using NuGet.Protocol.Core.v3;
 using YesNoPuzzle.Models;
 using YesNoPuzzle.Models.GameViewModels;
 
@@ -26,8 +29,14 @@ namespace YesNoPuzzle.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ICollection<Game> games = await _db.Games.ToListAsync();
-            return View(games);
+            if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == null)
+            {
+                var games = await _db.Games.ToListAsync();
+                return View(games);
+            }
+
+            return RedirectToAction("Index", "Game");
+
         }
 
         public async Task<IActionResult> CreateNewGame()
@@ -35,8 +44,10 @@ namespace YesNoPuzzle.Controllers
             return View();
         }
 
-        public async Task<IActionResult> AddNewGame(GameViewModel model)
+        public async Task<IActionResult> AddNewGame(Models.GameViewModels.GameViewModel model)
         {
+            if (model == null) return NotFound();
+
             _db.Games.Add(new Game()
             {
                 GameName = model.GameName,
@@ -45,9 +56,8 @@ namespace YesNoPuzzle.Controllers
                 User = await _userManager.GetUserAsync(HttpContext.User)
             });
             await _db.SaveChangesAsync();
-            //Content("OK");
-            //ViewBag.Msg = "ok";
-            return RedirectToAction(nameof(Index), "Home");
+
+            return RedirectToAction(nameof(Index), "Game");
         }
 
         public async Task<IActionResult> DeleteGame(int? id)
@@ -78,7 +88,7 @@ namespace YesNoPuzzle.Controllers
 
             var game = await _db.Games.Include(g => g.Questions).SingleOrDefaultAsync(g => g.Id == id);
 
-            var gameViewModel = new GameViewModel
+            var gameViewModel = new Models.GameViewModels.GameViewModel
             {
                 GameId = game.Id,
                 Game = game,
@@ -88,7 +98,7 @@ namespace YesNoPuzzle.Controllers
             return View(gameViewModel);
         }
 
-        public async Task<IActionResult> AddNewQuestion(string text,int gameId)
+        public async Task<IActionResult> AddNewQuestion(string text, int gameId)
         {
             var game = _db.Games.FirstOrDefault(g => g.Id == gameId);
 
@@ -96,33 +106,77 @@ namespace YesNoPuzzle.Controllers
             {
                 return NotFound();
             }
-            _db.Questions.Add(new Question
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                 _db.Questions.Add(new Question
             {
                 Text = text,
                 State = 0,
                 Game = game
             });
             await _db.SaveChangesAsync();
-            //return Content("OK");
-            return RedirectToAction(nameof(Index), "Home");
+            } 
+
+            var adress = "Game/" + gameId;
+
+            return RedirectToAction(adress, "Home");
 
         }
 
-        public async Task<IActionResult> Question()
+        public async Task<IActionResult> Question(int? id)
         {
-            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
             var games = await _db.Games
                 .Include(g => g.Questions)
-                .Where(g => g.User.Id == userId && g.GameState)
+                .Where(g => g.Id == id && g.GameState)
                 .ToListAsync();
-
-
-            foreach (var t in games)
-                t.Questions = t.Questions.Where(q => q.State == 0).ToList();
 
             return View(games);
         }
+
+        public async Task<IActionResult> AnswerYes(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var question = _db.Questions.First(q => q.Id == id);
+
+            question.State = 1;
+
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Question", "Home");
+        }
+
+        public async Task<IActionResult> AnswerNo(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var question = _db.Questions.First(q => q.Id == id);
+
+            question.State = 2;
+
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Question", "Home");
+        }
+
+
+        public async Task<IActionResult> AnswerNoMatter(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var question = _db.Questions.First(q => q.Id == id);
+
+            question.State = 3;
+
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Question", "Home");
+        }
+
 
         public IActionResult About()
         {

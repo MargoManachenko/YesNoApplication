@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using YesNoPuzzle.Data;
 
-namespace YesNoPuzzle.Data.Migrations
+namespace YesNoPuzzle.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160721081046_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -177,9 +178,11 @@ namespace YesNoPuzzle.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("GameCondition");
+                    b.Property<string>("GameCondition")
+                        .IsRequired();
 
-                    b.Property<string>("GameName");
+                    b.Property<string>("GameName")
+                        .IsRequired();
 
                     b.Property<bool>("GameState");
 
@@ -201,7 +204,8 @@ namespace YesNoPuzzle.Data.Migrations
 
                     b.Property<int>("State");
 
-                    b.Property<string>("Text");
+                    b.Property<string>("Text")
+                        .IsRequired();
 
                     b.Property<string>("UserId");
 
@@ -265,7 +269,7 @@ namespace YesNoPuzzle.Data.Migrations
                         .HasForeignKey("GameId");
 
                     b.HasOne("YesNoPuzzle.Models.ApplicationUser", "User")
-                        .WithMany("Questions")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
         }
