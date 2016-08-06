@@ -12,6 +12,9 @@ using Microsoft.Extensions.Logging;
 using YesNoPuzzle.Data;
 using YesNoPuzzle.Models;
 using YesNoPuzzle.Services;
+using System.Net.WebSockets;
+using System.Text;
+using System.Threading;
 
 namespace YesNoPuzzle
 {
@@ -72,11 +75,7 @@ namespace YesNoPuzzle
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
                 app.UseBrowserLink();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+            }         
 
             app.UseApplicationInsightsExceptionTelemetry();
 
@@ -84,13 +83,43 @@ namespace YesNoPuzzle
 
             app.UseIdentity();
 
-            // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
+            app.UseWebSockets();
+            app.Use(async (http, next) =>
+            {
+                if (http.WebSockets.IsWebSocketRequest)
+                {
+                    var webSocket = await http.WebSockets.AcceptWebSocketAsync();
+                    while (webSocket.State == WebSocketState.Open)
+                    {
+                        var token = CancellationToken.None;
+                        var buffer = new ArraySegment<byte>(new Byte[4096]);
+                        var received = await webSocket.ReceiveAsync(buffer, token);
+
+                        switch (received.MessageType)
+                        {
+                            case WebSocketMessageType.Text:
+                                var request = Encoding.UTF8.GetString(buffer.Array,
+                                                        buffer.Offset,
+                                                        buffer.Count);
+                                var type = WebSocketMessageType.Text;
+                                var data = Encoding.UTF8.GetBytes("Echo from server :" + request);
+                                buffer = new ArraySegment<Byte>(data);
+                                await webSocket.SendAsync(buffer, type, true, token);
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+                    await next();
+                }
+            });
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Player}/{action=Index}/{id?}");
             });
         }
     }

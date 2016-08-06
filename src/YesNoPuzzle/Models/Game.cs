@@ -10,7 +10,11 @@ namespace YesNoPuzzle.Models
         [Required]
         [Display(Name = "Name")]
         public string GameName { get; set; }
-        
+
+        public string UserName { get; set; }
+
+        public int SolvedGamesCount { get; set; }
+
         public virtual ApplicationUser User { get; set; }
 
         [Required]
@@ -18,6 +22,10 @@ namespace YesNoPuzzle.Models
         public string GameCondition { get; set; }
 
         public bool GameState { get; set; }
+
+        [Required]
+        [Display(Name = "Solution")]
+        public string GameSolution { get; set; }
 
         public virtual List<Question> Questions { get; set; }
     }

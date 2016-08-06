@@ -6,8 +6,9 @@ namespace YesNoPuzzle.Models.GameViewModels
     public class GameViewModel
     {
         public string GameName { get; set; }
-
         public string GameCondition { get; set; }
+
+        public string GameSolution { get; set; }
 
         public bool IsSolved { get; set; }
 
@@ -18,6 +19,7 @@ namespace YesNoPuzzle.Models.GameViewModels
         public Game Game { get; set; }
 
         public int GameId { get; set; }
+
     }
 }
 

@@ -1,5 +1,5 @@
 ﻿{
-  "userSecretsId": "aspnet-YesNoPuzzle-e05f16d6-56c5-44ae-a1c6-8f5d3128cbac",
+  "userSecretsId": "YesNoPuzzle",
 
   "dependencies": {
     "Microsoft.NETCore.App": {
@@ -40,10 +40,11 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "Microsoft.VisualStudio.Web.CodeGenerators.Mvc":  {
+    "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
       "version": "1.0.0-preview2-final",
       "type": "build"
-    }
+    },
+    "Microsoft.AspNetCore.WebSockets.Server": "0.1.0"
   },
 
   "tools": {

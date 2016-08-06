@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace YesNoPuzzle.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,6 +54,7 @@ namespace YesNoPuzzle.Migrations
                     PhoneNumber = table.Column<string>(nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(nullable: false),
                     SecurityStamp = table.Column<string>(nullable: true),
+                    SolvedGamesCount = table.Column<int>(nullable: false),
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true)
                 },
@@ -156,8 +157,11 @@ namespace YesNoPuzzle.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     GameCondition = table.Column<string>(nullable: false),
                     GameName = table.Column<string>(nullable: false),
+                    GameSolution = table.Column<string>(nullable: true),
                     GameState = table.Column<bool>(nullable: false),
-                    UserId = table.Column<string>(nullable: true)
+                    SolvedGamesCount = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -176,10 +180,12 @@ namespace YesNoPuzzle.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    GameId = table.Column<int>(nullable: true),
+                    GameId = table.Column<int>(nullable: false),
+                    QuestionDate = table.Column<DateTime>(nullable: false),
                     State = table.Column<int>(nullable: false),
                     Text = table.Column<string>(nullable: false),
-                    UserId = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -189,7 +195,7 @@ namespace YesNoPuzzle.Migrations
                         column: x => x.GameId,
                         principalTable: "Games",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Questions_AspNetUsers_UserId",
                         column: x => x.UserId,

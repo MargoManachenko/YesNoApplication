@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Rating";
+}
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+
+@model ICollection<ApplicationUser>
+@{
+    <br/>
+    <table class="table" align="center">
+        <tr>
+            <th><h3>User</h3></th>
+            <th><h3>Solved Games</h3></th>
+        </tr>
+        
+        @foreach (var u in Model)
+        {
+            <tr>
+                <td><h4>@u.UserName</h4></td>
+                <td><h4>@u.SolvedGamesCount</h4></td>
+            </tr>
+        }
+    </table>
+    <br />
+    
+}

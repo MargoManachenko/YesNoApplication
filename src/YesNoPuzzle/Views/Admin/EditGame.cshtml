@@ -1,0 +1,95 @@
+@model Game
+
+@{
+    ViewData["Title"] = "Edit game";
+}
+
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using YesNoPuzzle.Models
+
+<form asp-controller="Admin" asp-action="EditGameAction" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+    <br />
+    <div class="form-group">
+        <h3><label asp-for="GameName"></label></h3>
+        <input type="text" asp-for="GameName" class="form-control" style="max-width: 50%" autocomplete="off" required value="@Model.GameName" /><br />
+    </div>
+    <div class="form-group">
+        <h3><label asp-for="GameCondition"></label></h3>
+        <textarea asp-for="GameCondition" class="form-control" rows="8" style="max-width: 50%; resize: none" cols="50" required value="@Model.GameCondition"></textarea>
+        <input type="hidden" asp-for="@Model.Id" /> 
+    </div>
+    <div class="form-group">
+        <h3><label asp-for="GameSolution"></label></h3>
+        <textarea asp-for="GameSolution" class="form-control" rows="8" style="max-width: 50%; resize: none" cols="50" required value="@Model.GameSolution"></textarea>        
+    </div>
+    <br />
+   
+
+    @if (Model.Questions != null && Model.Questions.Count > 0)
+    {
+        <h3>Questions:</h3>
+        <hr />
+        @foreach (var q in @Model.Questions)
+        {
+            @if (q.State == 0)
+            {
+                <div class="alert alert-dismissable">
+                    <span class="glyphicon glyphicon-hourglass col-lg-1"></span>
+                    <p><h5>@q.UserName :</h5></p>
+                    <a href="/Admin/AnswerYesEdit/@q.Id" class="btn btn-info" role="button">Yes</a>
+                    <a href="/Admin/AnswerNoEdit/@q.Id" class="btn btn-danger" role="button">No</a>
+                    <a href="/Admin/AnswerNoMatterEdit/@q.Id" class="btn btn-default" role="button">No matter</a>
+                    <hr />
+                    <h4 style="text-indent: 5%">@q.Text</h4>
+                </div>
+            }
+            else if (q.State == 1)
+            {
+                <div class="alert alert-success">
+                    <span class="glyphicon glyphicon-ok col-lg-1"></span>
+                    <p><h5>@q.UserName :</h5></p>
+                    <a href="/Admin/AnswerYesEdit/@q.Id" class="btn btn-info" role="button">Yes</a>
+                    <a href="/Admin/AnswerNoEdit/@q.Id" class="btn btn-danger" role="button">No</a>
+                    <a href="/Admin/AnswerNoMatterEdit/@q.Id" class="btn btn-default" role="button">No matter</a>
+                    <hr />
+                    <h4 style="text-indent: 5%">@q.Text</h4>
+                </div>
+            }
+            else if (q.State == 2)
+            {
+                <div class="alert alert-danger">
+                    <span class="glyphicon glyphicon-remove col-lg-1"></span>
+                    <p><h5>@q.UserName :</h5></p>
+                    <a href="/Admin/AnswerYesEdit/@q.Id" class="btn btn-info" role="button">Yes</a>
+                    <a href="/Admin/AnswerNoEdit/@q.Id" class="btn btn-danger" role="button">No</a>
+                    <a href="/Admin/AnswerNoMatterEdit/@q.Id" class="btn btn-default" role="button">No matter</a>
+                    <hr />
+                    <h4 style="text-indent: 5%">@q.Text</h4>
+                </div>
+            }
+            else if (q.State == 3)
+            {
+                <div class="alert alert-info">
+                    <span class="glyphicon glyphicon-question-sign col-lg-1"></span>
+                    <p><h5>@q.UserName :</h5></p>
+                    <a href="/Admin/AnswerYesEdit/@q.Id" class="btn btn-info" role="button">Yes</a>
+                    <a href="/Admin/AnswerNoEdit/@q.Id" class="btn btn-danger" role="button">No</a>
+                    <a href="/Admin/AnswerNoMatterEdit/@q.Id" class="btn btn-default" role="button">No matter</a>
+                    <hr />
+                    <h4 style="text-indent: 5%">@q.Text</h4>
+                </div>
+            }
+        }
+
+    }
+    else
+    {      
+        <h4>No questions yet.</h4>
+        <br />
+    }
+
+    <div class="form-group">
+        <button class="btn btn-primary">Edit game</button>
+    </div>
+
+</form>

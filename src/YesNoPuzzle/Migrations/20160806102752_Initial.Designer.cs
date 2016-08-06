@@ -8,8 +8,8 @@ using YesNoPuzzle.Data;
 namespace YesNoPuzzle.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20160721081046_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20160806102752_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -156,6 +156,8 @@ namespace YesNoPuzzle.Migrations
 
                     b.Property<string>("SecurityStamp");
 
+                    b.Property<int>("SolvedGamesCount");
+
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
@@ -184,9 +186,15 @@ namespace YesNoPuzzle.Migrations
                     b.Property<string>("GameName")
                         .IsRequired();
 
+                    b.Property<string>("GameSolution");
+
                     b.Property<bool>("GameState");
 
+                    b.Property<int>("SolvedGamesCount");
+
                     b.Property<string>("UserId");
+
+                    b.Property<string>("UserName");
 
                     b.HasKey("Id");
 
@@ -200,7 +208,9 @@ namespace YesNoPuzzle.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("GameId");
+                    b.Property<int>("GameId");
+
+                    b.Property<DateTime>("QuestionDate");
 
                     b.Property<int>("State");
 
@@ -208,6 +218,8 @@ namespace YesNoPuzzle.Migrations
                         .IsRequired();
 
                     b.Property<string>("UserId");
+
+                    b.Property<string>("UserName");
 
                     b.HasKey("Id");
 
@@ -266,7 +278,8 @@ namespace YesNoPuzzle.Migrations
                 {
                     b.HasOne("YesNoPuzzle.Models.Game", "Game")
                         .WithMany("Questions")
-                        .HasForeignKey("GameId");
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("YesNoPuzzle.Models.ApplicationUser", "User")
                         .WithMany()

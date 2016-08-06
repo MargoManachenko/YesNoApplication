@@ -1,0 +1,110 @@
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using YesNoPuzzle.Models
+@{
+    ViewData["Title"] = "Game Page";
+}
+@model YesNoPuzzle.Models.GameViewModels.GameViewModel
+<style>
+    .panel{
+        position: fixed; /* Фиксированное положение */
+        right: 10px; /* Расстояние от правого края окна браузера */
+        top: 14%; /* Расстояние сверху */
+        padding: 10px; /* Поля вокруг текста */
+        background: #ffe; /* Цвет фона */
+        border: 1px solid #333; /* Параметры рамки */
+        width:33%;
+    }
+</style>
+
+@{
+    <br/>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>@Model.Game.GameName <small> (By @Model.Game.UserName)</small></h3>           
+        </div>
+        <div class="panel-body">
+            <h4>@Model.Game.GameCondition</h4>           
+        </div>
+    </div>
+
+
+    <div id="scroll">
+    @if (Model.Questions != null && Model.Questions.Count > 0)
+    {
+        <h3>Questions:</h3>
+        <hr/>
+        @foreach (var q in @Model.Questions)
+        {
+           @if (q.State == 0)
+           {
+            <div  style="background-color: lightgray" class="alert alert-dismissable">
+                <span class="glyphicon glyphicon-hourglass col-lg-1"></span>
+                <p><h5>@q.UserName :</h5></p>
+                <hr />
+                <h4 style="text-indent: 5%">@q.Text</h4>
+            </div>
+           }
+           else if (q.State == 1)
+           {
+            <div class="alert alert-success">
+                <span class="glyphicon glyphicon-ok col-lg-1"></span>
+                <p><h5>@q.UserName :</h5></p>
+                <hr/>
+                <h4 style="text-indent: 5%">@q.Text</h4>
+            </div>
+           }
+           else if (q.State == 2)
+           {
+            <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove col-lg-1"></span>
+                <p><h5>@q.UserName :</h5></p>
+                <hr />
+                <h4 style="text-indent: 5%">@q.Text</h4>
+            </div>
+           }
+           else if (q.State == 3)
+           {
+            <div class="alert alert-info">
+                <span class="glyphicon glyphicon-question-sign col-lg-1"></span>
+                <p><h5>@q.UserName :</h5></p>
+                <hr />
+                <h4 style="text-indent: 5%">@q.Text</h4>
+            </div>
+           }            
+        }
+       
+    }
+    else
+    {
+        <h4>No questions yet.</h4>
+    }
+
+    @if (Model.Game.GameState == true)
+    {
+        <hr/>
+        <form asp-controller="Player" asp-action="AddNewQuestion" method="post" class="form-horizontal">
+            <div class="form-group ask">
+                <label> Ask:</label>
+                <input type="text" class="form-control" asp-for="@Model.Text" required/><br/>
+                <input type="hidden" asp-for="@Model.GameId"/>
+          <br/>
+                <button class="btn btn-primary">Ask</button>              
+            </div>
+        </form>
+    }
+    else
+    {
+        <h2>Game over:)</h2>
+        <h2>Right solution</h2>
+        <h4>@Model.Game.GameSolution</h4>
+    }
+    </div>
+
+    }
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        window.scrollTo(0, document.body.scrollHeight);
+    });
+</script>
+

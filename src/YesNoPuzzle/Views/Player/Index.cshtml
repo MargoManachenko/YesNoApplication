@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+
+@model ICollection<Game>
+@{
+
+   @if (Model.Count == 1)
+   {<h1>There is @Model.Count game.</h1>}
+   else if(Model.Count > 1)
+   { <h1>There are @Model.Count games.</h1>}
+   else
+   { <h1>There are no games.</h1>}
+    <div class="list-group">
+       
+        @foreach (var g in Model)
+        {
+            if (g.GameState == true)
+            {
+            <div style="display: inline">
+                <h3><a href="player/Game/@g.Id" class="list-group-item">@g.GameName  <small>(By @g.UserName)</small></a></h3>                
+            </div>
+            }
+            else
+            {
+                <div style="display: inline">
+                    <h3><a href="player/Game/@g.Id" class="list-group-item">@g.GameName  (Game Over) <small>(By @g.UserName)</small></a></h3>
+                </div>
+            }
+        }
+    </div>
+        <br />
+}

@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model ICollection<Game>
+@if (Model != null)
+{
+    @if (Model.Count == 1)
+    {<h1>There is @Model.Count game.</h1>}
+    else if (Model.Count > 1)
+    { <h1>There are @Model.Count games.</h1>}
+    else
+    { <h1>There are no games.</h1>}
+    <br />
+
+    foreach (var g in Model)
+    {
+        <div class="list-group">
+            <div class="col-lg-11">
+                <h3>
+                    <a href="/player/Game/@g.Id" class="list-group-item">@g.GameName</a>
+                </h3>
+            </div>
+
+            <div class="col-lg-12"></div>
+            <a href="/Admin/EditGame/@g.Id" class="btn btn-info" role="button" style="margin-top: 27px">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            </a>
+            <a href="/Admin/DeleteGame/@g.Id" class="btn btn-danger" role="button" style="margin-top: 27px">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </a>
+
+            <hr />
+        </div>
+    }
+    <br />
+    <a href="/Admin/ShowAllGames" class="btn btn-info" role="button">Show all games</a>
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        window.scrollTo(0, document.body.scrollHeight);
+    });
+</script>
