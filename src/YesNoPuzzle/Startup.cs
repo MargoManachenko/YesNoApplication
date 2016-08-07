@@ -15,6 +15,7 @@ using YesNoPuzzle.Services;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
+using YesNoPuzzle.WebSocket;
 
 namespace YesNoPuzzle
 {
@@ -69,6 +70,15 @@ namespace YesNoPuzzle
             loggerFactory.AddDebug();
 
             app.UseApplicationInsightsRequestTelemetry();
+
+            //WS
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
+            app.Map("/ws", SocketHandler.Map);
+            
+            //WS
 
             if (env.IsDevelopment())
             {

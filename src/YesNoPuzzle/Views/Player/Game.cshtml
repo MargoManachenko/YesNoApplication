@@ -85,22 +85,57 @@
         <form asp-controller="Player" asp-action="AddNewQuestion" method="post" class="form-horizontal">
             <div class="form-group ask">
                 <label> Ask:</label>
-                <input type="text" class="form-control" asp-for="@Model.Text" required/><br/>
+                <input type="text" class="form-control" asp-for="@Model.Text" id="question" required/><br/>
                 <input type="hidden" asp-for="@Model.GameId"/>
-          <br/>
-                <button class="btn btn-primary">Ask</button>              
+                <br/>
+                <button class="btn btn-primary" onclick="Send()">Ask</button>
+
             </div>
         </form>
+
     }
     else
     {
         <h2>Game over:)</h2>
-        <h2>Right solution</h2>
+        <h2>Solution:</h2>
         <h4>@Model.Game.GameSolution</h4>
     }
     </div>
 
-    }
+    <div id="output"></div>
+    <script language="javascript" type="text/javascript">
+
+        function Send(){
+
+            var socket;
+            var uri = "ws://" + window.location.host + "/ws";
+            var text = document.getElementById("question").value;
+            var output = document.getElementById("output");
+
+            doConnect();
+
+            function write(s) {
+                var p = document.createElement("p");
+                p.innerHTML = s;
+                output.appendChild(p);
+            }
+
+            function doConnect() {
+                socket = new WebSocket(uri);
+                socket.onopen = function (e) { write("opened " + uri); doSend(); };
+                socket.onclose = function (e) { write("closed"); };
+                socket.onmessage = function (e) { write("Received: " + e.data); socket.close(); };
+                socket.onerror = function (e) { write("Error: " + e.data); };
+            }
+
+            function doSend() {
+                write("Sending: " + text);
+                socket.send(text);
+            }
+        }
+
+    </script>
+}
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
