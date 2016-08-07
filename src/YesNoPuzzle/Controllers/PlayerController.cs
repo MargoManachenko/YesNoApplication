@@ -31,8 +31,7 @@ namespace YesNoPuzzle.Controllers
             {
                List<Game> games = await _db.Games.ToListAsync();   
                             
-                games.Sort(delegate (Game g1, Game g2)
-                { return g1.GameName.CompareTo(g2.GameName); });
+                games.Sort((g1, g2) => g1.GameName.CompareTo(g2.GameName));
 
                 return View(games);
             }
@@ -65,7 +64,7 @@ namespace YesNoPuzzle.Controllers
             return View(gameViewModel);
         }
 
-        public async Task<IActionResult> AddNewQuestion(string text,int gameId)
+        public void AddNewQuestion(string text,int gameId)
         {
             var game = _db.Games.SingleOrDefault(g => g.Id == gameId);
 
@@ -73,7 +72,7 @@ namespace YesNoPuzzle.Controllers
 
             if (game == null)
             {
-                return NotFound();
+                return;
             }
 
             if (text != null)
@@ -86,9 +85,8 @@ namespace YesNoPuzzle.Controllers
                     UserName = (user == null) ? "Anonimus" : user.Email
                 });
             
-            await _db.SaveChangesAsync();
-           
-            return RedirectToAction("Game", new { id = gameId });
+            _db.SaveChanges();
+            return;
 
         }
 
