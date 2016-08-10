@@ -88,7 +88,7 @@
                 <input type="text" class="form-control" asp-for="@Model.Text" id="question" required/><br/>
                 <input type="hidden" asp-for="@Model.GameId"/>
                 <br/>
-                <button class="btn btn-primary" onclick="Send()">Ask</button>
+                <button class="btn btn-primary" onclick="doSend(), event.preventDefault();" >Ask</button>
             </div>
         </form>
 
@@ -104,34 +104,48 @@
     <div id="output"></div>
     <script language="javascript" type="text/javascript">
 
-        function Send(){
+        var socket;
+        var uri = "ws://" + window.location.host + "/ws";
+        var output;
+        var text = "test echo";
 
-            var socket;
-            var uri = "ws://" + window.location.host + "/ws";
-            var text = document.getElementById("question").value;
-            var output = document.getElementById("output");
-
-            doConnect();
-
-            function write(s) {
-                var p = document.createElement("p");
-                p.innerHTML = s;
-                output.appendChild(p);
-            }
-
-            function doConnect() {
-                socket = new WebSocket(uri);
-                socket.onopen = function (e) { write("opened " + uri); doSend(); };
-                socket.onclose = function (e) { write("closed"); };
-                socket.onmessage = function (e) { write("Received: " + e.data); socket.close(); };
-                socket.onerror = function (e) { write("Error: " + e.data); };
-            }
-
-            function doSend() {
-                write("Sending: " + text);
-                socket.send(text);
-            }
+        function write(s) {
+            var p = document.createElement("p");
+            p.innerHTML = s;
+            output.appendChild(p);
         }
+
+
+        function openSocket() {
+
+            output = document.getElementById("output"); 
+            socket = new WebSocket(uri);
+            socket.onopen = function (e) { write("opened " + uri); };
+
+        }
+
+        function closeSocket() {
+
+            socket.close();
+            socket.onclose = function (e) { write("closed"); };
+
+        }
+
+        function error() {
+
+            socket.onerror = function (e) { write("Error: " + e.data); };
+        }
+
+        function doSend() {
+
+            write("Sending: " + text);
+            socket.send(text);
+
+        }
+
+        window.onload = openSocket;
+
+        window.onclose = closeSocket;
 
     </script>
 }
